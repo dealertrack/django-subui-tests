@@ -1,0 +1,23 @@
+{
+  "exclude": [
+    "*/.tox/*"
+  ],
+  "groups": [
+    {
+      "type": "stdlib"
+    },
+    {
+      "type": "remainder"
+    },
+    {
+      "type": "packages",
+      "packages": [
+        "subui",
+        "tests"
+      ]
+    },
+    {
+      "type": "local"
+    }
+  ]
+}
