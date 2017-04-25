@@ -3,7 +3,7 @@ License
 
 The MIT License (MIT)
 
-Copyright, dealertrack technologies
+Copyright, Dealertrack Technologies, Inc.
 
 ::
 
