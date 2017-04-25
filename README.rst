@@ -15,6 +15,7 @@ Framework to make workflow server integration test suites
 
 * Free software: MIT license
 * GitHub: https://github.com/dealertrack/django-subui-tests
+* Documentation: http://django-subui-tests.readthedocs.io/
 
 Installing
 ----------
