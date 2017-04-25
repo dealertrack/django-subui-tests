@@ -28,7 +28,7 @@ test_requirements = (
 )
 
 setup(
-    name='py-context',
+    name='django-subui-tests',
     version=__version__,
     author=__author__,
     description=__description__,
