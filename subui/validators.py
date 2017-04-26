@@ -225,6 +225,14 @@ class StatusCodeValidator(BaseValidator):
         )
 
 
+class StatusCodeCreatedValidator(StatusCodeValidator):
+    """
+    Validator to check that the returned status
+    code is created - 201
+    """
+    expected_status_code = 201
+
+
 class StatusCodeOkValidator(StatusCodeValidator):
     """
     Validator to check that the returned status
