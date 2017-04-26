@@ -6,6 +6,7 @@ from collections import OrderedDict
 
 import six
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from .validators import BaseValidator
 
@@ -31,8 +32,12 @@ class TestStep(object):
         the URL using Django's ``reverse``.
     :var str request_method: HTTP method to use for the request.
         Default is ``"post"``
+    :var str urlconf: Django URL Configuration.
+    :var str content_type: Content-Type of the request.
+    :var dict overriden_settings: Dictionary of settings to be overriden for the
+        test request.
     :var dict data: Data to be sent to the server in the request
-    :var platform_utils.utils.dt_context.BaseContext state:
+    :var pycontext.context.Context state:
         Reference to a global state from the test runner.
     :var list TestStep.validators: List of response validators
     :var response: Server response for the made request.
@@ -50,6 +55,9 @@ class TestStep(object):
     url_name = None
     url_args = None
     url_kwargs = None
+    urlconf = None
+    content_type = None
+    overriden_settings = None
 
     request_method = 'post'
 
@@ -143,6 +151,29 @@ class TestStep(object):
         next_steps = list(self.next_steps.values())
         return next_steps[0] if next_steps else None
 
+    def get_urlconf(self):
+        """
+        Get ``urlconf`` which will be used to compute the URL using ``reverse``
+
+        By default this returns :py:attr:`urlconf`, if defined,
+        else empty string
+
+        :rtype: str
+        """
+        return self.urlconf or ''
+
+    def get_override_settings(self):
+        """
+        Get ``overriden_settings`` which will be used to decorate the request with
+        the defined settings to be overriden.
+
+        By default this returns :py:attr:`overriden_settings`, if defined,
+        else empty dict
+
+        :rtype: dict
+        """
+        return self.overriden_settings or {}
+
     def get_url_args(self):
         """
         Get ``url_args`` which will be used to compute
@@ -178,7 +209,19 @@ class TestStep(object):
         """
         return reverse(self.url_name,
                        args=self.get_url_args(),
-                       kwargs=self.get_url_kwargs())
+                       kwargs=self.get_url_kwargs(),
+                       urlconf=self.get_urlconf())
+
+    def get_content_type(self):
+        """
+        Get ``content_type`` which will be used when making the test request.
+
+        By default this returns :py:attr:`content_type`, if defined,
+        else empty string.
+
+        :rtype: str
+        """
+        return self.content_type or ''
 
     def get_request_data(self, data=None):
         """
@@ -207,10 +250,16 @@ class TestStep(object):
 
         :rtype: dict
         """
-        return {
+        kwargs = {
             'path': self.get_url(),
             'data': self.get_request_data(),
         }
+
+        content_type = self.get_content_type()
+        if content_type:
+            kwargs['content_type'] = content_type
+
+        return kwargs
 
     def get_validators(self):
         """
@@ -237,8 +286,9 @@ class TestStep(object):
         """
         self.pre_request_hook()
         try:
-            self.response = (getattr(self.client, self.request_method)
-                             (**self.get_request_kwargs()))
+            with override_settings(**self.get_override_settings()):
+                self.response = (getattr(self.client, self.request_method)
+                                 (**self.get_request_kwargs()))
         except Exception:
             validator = BaseValidator(self)
             e_type, e, e_traceback = sys.exc_info()
@@ -281,25 +331,21 @@ class TestStep(object):
         """
         Hook which is executed before validating the response.
         """
-        pass
 
     def post_test_response(self):
         """
         Hook which is executed after validating the response.
         """
-        pass
 
     def pre_request_hook(self):
         """
         Hook which is executed before server request is sent.
         """
-        pass
 
     def post_request_hook(self):
         """
         Hook which is executed after server request is sent.
         """
-        pass
 
 
 class StatefulUrlParamsTestStep(TestStep):

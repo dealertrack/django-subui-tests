@@ -71,6 +71,38 @@ class TestTestStep(TestCase):
             4,
         )
 
+    def test_get_content_type(self):
+        """
+        Test that get_content_type returns content_type if defined
+        """
+        step = TestStep()
+        self.assertEqual(step.get_content_type(), '')
+
+        step.content_type = 'application/json'
+        self.assertEqual(step.get_content_type(), 'application/json')
+
+    def test_get_override_settings(self):
+        """
+        Test that get_override_settings returns overriden_settings if defined
+        """
+        step = TestStep()
+        self.assertDictEqual(step.get_override_settings(), {})
+
+        step.overriden_settings = {
+            'ROOT_URLCONF': 'services.urls'
+        }
+        self.assertEqual(step.get_override_settings(), {'ROOT_URLCONF': 'services.urls'})
+
+    def test_get_urlconf(self):
+        """
+        Test that get_urlconf returns urlconf  if defined
+        """
+        step = TestStep()
+        self.assertEqual(step.get_urlconf(), '')
+
+        step.urlconf = 'services.urls'
+        self.assertEqual(step.get_urlconf(), 'services.urls')
+
     def test_get_url_args(self):
         """
         Test that get_url_args returns url args if defined
@@ -108,7 +140,7 @@ class TestTestStep(TestCase):
         mock_get_url_args.assert_called_once_with(step)
         mock_get_url_kwargs.assert_called_once_with(step)
         mock_reverse.assert_called_once_with(
-            'url-name', args=tuple(), kwargs={})
+            'url-name', args=tuple(), urlconf='', kwargs={})
 
     def test_get_request_data(self):
         """
@@ -231,3 +263,20 @@ class TestStatefulUrlParamsTestStep(TestCase):
 
         self.assertEqual(actual, mock.sentinel.kwargs)
         mock_state.get.assert_called_once_with('url_kwargs', mock.sentinel.super)
+
+    @mock.patch.object(TestStep, 'get_url')
+    def test_get_request_kwargs(self, mock_get_url):
+        """
+        Test that get_request_kwargs returns correct kwargs
+        """
+        step = TestStep(
+            data={'foo': 'bar'},
+            content_type='application/json'
+        )
+        self.assertDictEqual(
+            step.get_request_kwargs(), {
+                'path': mock_get_url.return_value,
+                'data': {'foo': 'bar'},
+                'content_type': 'application/json'
+            }
+        )

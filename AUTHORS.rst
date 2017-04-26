@@ -8,5 +8,4 @@ Development Lead
 
 Contributors
 ~~~~~~~~~~~~
-
-None yet. Why not be the first?
+* Milind Shakya  - https://github.com/milin 
