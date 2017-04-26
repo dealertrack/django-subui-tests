@@ -98,7 +98,7 @@ class TestTestStep(TestCase):
         Test that get_urlconf returns urlconf  if defined
         """
         step = TestStep()
-        self.assertEqual(step.get_urlconf(), '')
+        self.assertIsNone(step.get_urlconf())
 
         step.urlconf = 'services.urls'
         self.assertEqual(step.get_urlconf(), 'services.urls')
@@ -140,7 +140,7 @@ class TestTestStep(TestCase):
         mock_get_url_args.assert_called_once_with(step)
         mock_get_url_kwargs.assert_called_once_with(step)
         mock_reverse.assert_called_once_with(
-            'url-name', args=tuple(), urlconf='', kwargs={})
+            'url-name', args=tuple(), urlconf=None, kwargs={})
 
     def test_get_request_data(self):
         """

@@ -156,11 +156,11 @@ class TestStep(object):
         Get ``urlconf`` which will be used to compute the URL using ``reverse``
 
         By default this returns :py:attr:`urlconf`, if defined,
-        else empty string
+        else None
 
         :rtype: str
         """
-        return self.urlconf or ''
+        return self.urlconf or None
 
     def get_override_settings(self):
         """
