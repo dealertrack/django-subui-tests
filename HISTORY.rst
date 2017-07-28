@@ -3,10 +3,15 @@
 History
 -------
 
-0.2.1 (2017-4-26)
+0.2.2 (2017-07-28)
 -----------------
 
-* Fix bug related to default urlconf value. 
+* Excluding tests from being installed
+
+0.2.1 (2017-04-26)
+-----------------
+
+* Fix bug related to default urlconf value.
 
 0.2.0 (2017-04-26)
 ~~~~~~~~~~~~~~~~~~

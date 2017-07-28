@@ -35,7 +35,7 @@ setup(
     long_description='\n\n'.join([readme, history, authors, licence]),
     url='https://github.com/dealertrack/django-subui-tests',
     license='MIT',
-    packages=find_packages(exclude=['test', 'test.*']),
+    packages=find_packages(exclude=['tests', 'tests.*']),
     install_requires=requirements,
     test_suite='tests',
     tests_require=test_requirements,

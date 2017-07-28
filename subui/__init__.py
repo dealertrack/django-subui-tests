@@ -218,5 +218,5 @@ from __future__ import unicode_literals
 
 
 __author__ = 'Miroslav Shubernetskiy'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __description__ = 'Framework to make workflow server integration test suites'
