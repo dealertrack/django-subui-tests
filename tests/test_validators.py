@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import mock
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import Resolver404
+from django.urls import Resolver404
 from django.http.response import HttpResponse
 from django.template.response import SimpleTemplateResponse
 

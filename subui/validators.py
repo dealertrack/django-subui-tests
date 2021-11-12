@@ -2,7 +2,7 @@ from __future__ import print_function, unicode_literals
 import inspect
 
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import Resolver404, resolve
+from django.urls import Resolver404, resolve
 from django.template.response import SimpleTemplateResponse
 from six.moves.urllib_parse import urlsplit, urlunsplit
 
