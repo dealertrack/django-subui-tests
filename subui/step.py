@@ -5,7 +5,7 @@ import unittest
 from collections import OrderedDict
 
 import six
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import override_settings
 
 from .validators import BaseValidator
